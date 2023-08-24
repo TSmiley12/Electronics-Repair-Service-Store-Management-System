@@ -1,0 +1,26 @@
+ {% extends 'accounts/base.html' %}
+
+ {% block content %}
+ <div class="container mt-5">
+     <div class="row">
+         <div class="col-md-8 offset-md-2">
+             <div class="card">
+                 <div class="card-body">
+                     <h2 class="card-title">{{ problem.title }}</h2>
+                     <p class="card-text"><strong>Description:</strong> {{ problem.desc }}</p>
+                     <p class="card-text"><strong>Created Date:</strong> {{ problem.upload_date }}</p>
+                     <p class="card-text"><strong>Status:</strong>
+                         {% if problem.solved %}
+                         <span class="badge bg-success">Solved</span>
+                         {% else %}
+                         <span class="badge bg-warning text-dark">Pending</span>
+                         {% endif %}
+                     </p>
+                     <a href="{% url 'client_problems' %}" class="btn btn-primary">Back to Your Problems</a>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+
+ {% endblock %}

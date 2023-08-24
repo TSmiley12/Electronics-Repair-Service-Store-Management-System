@@ -1,0 +1,93 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% block extrastyle %}{{ block.super }}
+<style>
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static "admin/css/forms.css" %}">{% endblock %}
+<!-- --------------------------------- -->
+
+<!-- ------------------------------------------------ -->
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo; {% translate 'asign staff' %}
+</div>
+{% endblock %}
+<!-- ------------------------------------ -->
+{% block content %}<div id="content-main">
+    <h2>Admin's Problem List</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>By Client</th>
+                <th>Title</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Allocated to</th>
+                <th>Assign to</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for problem in problems %}
+            <tr>
+                <td>{{ problem.client.user.username }}</td>
+                <td>
+                    <div class="tooltip">{{ problem.title }}
+                        <span class="tooltiptext">{{ problem.desc }}</span>
+                    </div>
+                </td>
+
+                <td>{{ problem.upload_date }}</td>
+                <td>
+                    {% if problem.solved %}
+                    <span style="color: blue;">Solved</span>
+                    {% else %}
+                    <span style="color: red;">Pending</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if problem.staff_involved.exists %}
+                    {{ problem.staff_involved.first.username }}
+                    {% else %}
+                    <p>-----</p>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if not  problem.solved %}
+                    <a href="{% url 'assign_to_staff' problem.id %}">Allocate to staff</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% endblock %}

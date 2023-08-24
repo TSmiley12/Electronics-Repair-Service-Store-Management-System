@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteRevive Tech</title>
+    <!-- Link to Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    {% block head %}
+
+    {% endblock %}
+
+
+    <style>
+        /* Custom style for sliding menu */
+        @media (max-width: 767px) {
+            .navbar-collapse {
+                position: fixed;
+                width: 250px;
+                height: 100%;
+                left: -250px;
+                top: 0;
+                bottom: 0;
+                background-color: #343a40;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .navbar-toggler {
+                position: absolute;
+                right: 0;
+                z-index: 1001;
+            }
+
+            .navbar-toggler-icon {
+                background-color: #fff;
+            }
+
+            .navbar-collapse.show {
+                left: 0;
+            }
+
+            .navbar-nav.ml-auto {
+                margin-top: 20px;
+            }
+        }
+
+        /* Custom dropdown menu style */
+        .dropdown-menu {
+            background-color: #343a40;
+        }
+
+        .dropdown-menu a {
+            color: #fff;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #212529;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container" padding-right: 20px;>
+            <a class="navbar-brand" href="{% url 'home' %}">ByteRevive Tech</a>
+            {% if user.is_authenticated %}
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon bg-dark"></span>
+            </button>
+            {%else%}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <!-- <span class="navbar-toggler-icon"></span> -->
+                <span>
+                    login/register
+                </span>
+            </button>
+            {%endif%}
+
+            <div class="collapse navbar-collapse" id="navbarNav" style="padding-right: 9px;">
+
+
+                <ul class="navbar-nav ml-auto" style="padding-left: 13px;">
+                    {% if user.is_authenticated %}
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+
+                    {% endif %}
+                    <!-- New Profile Tab with Dropdown Menu -->
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                            data-toggle="dropdown">
+                            <i class="fas fa-user-circle" style="color: white;"></i> {{ user.get_username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="#">Edit Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout_user' %}">Logout</a>
+                        </div>
+                    </li>
+                    {%else%}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                            data-toggle="dropdown">
+                            login/register
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{% url 'login_client' %}">login as client</a>
+                            <a class="dropdown-item" href=" {% url 'client_register' %}">register as client</a>
+                            <a class="dropdown-item" href="{% url 'login_staff' %}">login as staff</a>
+                            <a class="dropdown-item" href="{% url 'staff_register' %}">register as staff</a>
+                        </div>
+                    </li>
+                    {%endif%}
+
+                </ul>
+
+
+
+            </div>
+        </div>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+
+    </main>
+    <script>
+        // Add an event listener to the document for a click event
+        document.addEventListener("click", function (event) {
+            // Get the target element of the click event
+            const targetElement = event.target;
+
+            // Get the .navbar-collapse element
+            const navbarCollapse = document.querySelector(".navbar-collapse");
+
+            // Check if the clicked element is not inside the .navbar-collapse and not the .navbar-toggler
+            if (!navbarCollapse.contains(targetElement) && targetElement !== document.querySelector(
+                    ".navbar-toggler")) {
+                // Remove the "show" class from .navbar-collapse with a slight delay
+                setTimeout(function () {
+                    navbarCollapse.classList.remove("show");
+                }, 10); // Delay in milliseconds (adjust as needed)
+            }
+        });
+
+        // Rest of your existing JavaScript code...
+    </script>
+
+    <!-- Link to Bootstrap JS (Place this script at the end of the body) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

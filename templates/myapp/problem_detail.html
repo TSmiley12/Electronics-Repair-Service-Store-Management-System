@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ problem.title }}</title>
+</head>
+
+<body>
+    <h2>{{ problem.title }}</h2>
+    <p><strong>Description:</strong> {{ problem.desc }}</p>
+    <p><strong>Created Date:</strong> {{ problem.upload_date }}</p>
+    <p><strong>Status:</strong> {% if problem.solved %}Solved{% else %}Pending{% endif %}</p>
+    <a href="{% url 'client_problems' %}">Back to Your Problems</a>
+</body>
+
+</html>

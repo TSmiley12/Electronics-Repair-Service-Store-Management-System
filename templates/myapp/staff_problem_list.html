@@ -1,0 +1,72 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<style>
+    .toolti {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+
+    .toolti .tooltiptex {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
+
+    .toolti:hover .tooltiptex {
+        visibility: visible;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Staff Problem List</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Phone Number</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for problem in problems %}
+            <tr>
+                <td>{{ problem.client.user.get_full_name }}</td>
+                <td>{{ problem.client.phone_number }}</td>
+                <td>
+                    <div class="toolti">{{ problem.title }}
+                        <span class="tooltiptex">{{ problem.desc }}</span>
+                    </div>
+                    <!-- {{ problem.title }} -->
+                </td>
+                <td>
+                    {% if problem.solved %}
+                    <span class="badge badge-success">Solved</span>
+                    {% else %}
+                    <span class="badge badge-warning text-dark">Pending</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="post" action="{% url 'mark_solved' problem.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Done</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

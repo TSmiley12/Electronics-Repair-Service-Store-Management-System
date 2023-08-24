@@ -1,0 +1,18 @@
+{% extends "admin/index.html" %}
+
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "admin/css/custom_admin.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<!-- You can keep or remove other sidebar elements as needed -->
+{% endblock %}

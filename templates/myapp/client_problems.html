@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            /* Adjust this value to increase or decrease the spacing */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <title>Client Problems</title>
+</head>
+
+<body>
+    <h2>Your Problems</h2>
+    <table>
+        <tr>
+            <th>TITLE</th>
+            <th>Status</th>
+        </tr>
+        {% for problem in problems %}
+        <tr>
+            <td><a href="{% url 'problem_detail' problem.id %}">{{ problem.title }}</a></td>
+            <td>{% if problem.solved %}Solved{% else %}Pending{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+
+{% block branding %}
+{% if user.is_authenticated %}
+<div class="text-center">
+    <h1 id="site-name"><a href="{% url 'admin:index' %}"> Admin Panel</a></h1>
+</div>
+{%else%}
+<div class="text-center">
+    <h1 id="site-name"><a href="{% url 'admin:index' %}"> Admin login page</a></h1>
+</div>
+{%endif%}
+
+{% endblock %}

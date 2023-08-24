@@ -1,0 +1,70 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% block extrastyle %}{{ block.super }}
+<style>
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static "admin/css/forms.css" %}">{% endblock %}
+<!-- --------------------------------- -->
+
+<!-- ------------------------------------------------ -->
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo; {% translate 'asign staff' %}
+</div>
+{% endblock %}
+<!-- ------------------------------------ -->
+{% block content %}<div id="content-main">
+    <h2>Assign Problem to Staff</h2>
+    <form method="post" id="assign-form">
+        {% csrf_token %}
+        <label for="staff_id">Assign to Staff:</label>
+        <select name="staff_id" id="staff_id">
+            <option value="" selected disabled>----</option>
+            {% for staff_user in staff_users %}
+            <option value="{{ staff_user.id }}">{{ staff_user.username }}</option>
+            {% endfor %}
+        </select>
+        <span id="select-message" style="color: red; display: none;">Please select a staff.</span>
+        <br>
+        <input type="submit" value="Assign" id="assign-button">
+    </form>
+
+    <a href="{% url 'admin_problems_list' %}">Back to Problem List</a>
+
+    <script>
+        document.getElementById('assign-form').addEventListener('submit', function (event) {
+            var selectedOption = document.getElementById('staff_id').value;
+            if (selectedOption === "") {
+                event.preventDefault(); // Prevent form submission
+                document.getElementById('select-message').style.display = 'inline';
+            } else {
+                document.getElementById('select-message').style.display = 'none';
+            }
+        });
+    </script>
+    {% endblock %}

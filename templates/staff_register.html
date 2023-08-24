@@ -1,0 +1,71 @@
+ {% extends 'accounts/base.html' %}
+ {% block head %}
+ <style>
+     .error {
+         color: red;
+         font-size: 12px;
+         margin-top: 5px;
+     }
+ </style>
+ <script>
+     // Function to validate password matching
+     function validatePasswordMatch() {
+         var password1 = document.getElementById("id_password1").value;
+         var password2 = document.getElementById("id_password2").value;
+
+         if (password1 !== password2) {
+             document.getElementById("password-error").style.display = "block";
+             return false;
+         } else {
+             document.getElementById("password-error").style.display = "none";
+             return true;
+         }
+     }
+
+     // Function to validate password length
+     function validatePasswordLength() {
+         var password1 = document.getElementById("id_password1").value;
+
+         if (password1.length < 8) {
+             document.getElementById("length-error").style.display = "block";
+             return false;
+         } else {
+             document.getElementById("length-error").style.display = "none";
+             return true;
+         }
+     }
+
+     // Function to validate the form on submission
+     function validateForm() {
+         return validatePasswordMatch() && validatePasswordLength();
+     }
+ </script>
+
+ {% endblock %}
+
+ {% block content %}
+ <div class="container">
+     <div class="row justify-content-center mt-5">
+         <div class="col-md-6">
+             <div class="card shadow-lg">
+                 <div class="card-header bg-primary text-white text-center">
+                     <h2>Staff Registration Form</h2>
+
+                     <form action="{% url 'staff_register' %}" method="POST" onsubmit="return validateForm()">
+                         {% csrf_token %}
+                         {{ form.as_p }}
+                         <div id="password-error" class="error" style="display: none;">Passwords do not match.</div>
+                         <div id="length-error" class="error" style="display: none;">Password must be at least 8
+                             characters long.</div>
+                         <!-- Display username errors -->
+                         {% if form.username.errors %}
+                         <div class="error">{{ form.username.errors }}</div>
+                         {% endif %}
+                         <input type="submit" value="Register">
+                     </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ {% endblock %}

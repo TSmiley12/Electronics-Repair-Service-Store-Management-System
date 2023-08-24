@@ -1,0 +1,27 @@
+{% extends 'accounts/base.html' %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4">Register a Problem</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                    {{ form.title }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.desc.id_for_label }}" class="form-label">Description</label>
+                    {{ form.desc }}
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
